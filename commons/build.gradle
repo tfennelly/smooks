@@ -1,0 +1,9 @@
+archivesBaseName='milyn-commons'
+
+description='Common classes that are shared amoung Smooks modules.'
+
+dependencies {
+	compile servletApi.dependency()
+	compile hsqldb.dependency()
+	compile project(":testres")
+}

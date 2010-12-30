@@ -1,0 +1,7 @@
+archivesBaseName = 'milyn-smooks-edi-test'
+
+dependencies {
+	compile project (':edi/ejc') 
+	compile project (':smooks-cartridges/routing') 
+	compile project (':testres') 
+}

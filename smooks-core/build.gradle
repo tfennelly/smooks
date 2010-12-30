@@ -1,0 +1,20 @@
+description='Smooks core contains the main Smooks engine.'
+
+archivesBaseName='milyn-smooks-core'
+
+dependencies {
+	compile project(':commons')
+	compile dtdParser.dependency()
+	compile transactionApi.dependency()
+	compile xstream.dependency()
+	compile mvel2.dependency()
+	compile(jaxen.dependency()) {
+		exclude(module: 'dom4j')
+		exclude(module: 'xerces')
+		exclude(module: 'xercesImpl')
+		exclude(module: 'xom')
+	}
+	testCompile project(":testres")
+	testCompile xercesImpl.dependency()
+}
+
