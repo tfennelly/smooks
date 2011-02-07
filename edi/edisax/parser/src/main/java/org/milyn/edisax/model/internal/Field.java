@@ -17,11 +17,12 @@
 package org.milyn.edisax.model.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Field extends ValueNode implements ContainerNode {
 
-    private List<Component> component;
+    private List<Component> components = new ArrayList<Component>();
     private Boolean required;
     private Boolean truncatable;
     
@@ -41,14 +42,14 @@ public class Field extends ValueNode implements ContainerNode {
 	}
 
 	public List<Component> getComponents() {
-        if (component == null) {
-            component = new ArrayList<Component>();
-        }
-        return this.component;
+        return Collections.unmodifiableList(this.components);
     }
-    
+
     public Field addComponent(Component component) {
-    	getComponents().add(component);
+        if(component.isNodeIndexUndefined()) {
+            component.setNodeIndex(components.size());
+        }
+    	components.add(component);
     	return this;
     }
 

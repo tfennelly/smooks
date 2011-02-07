@@ -327,7 +327,7 @@ public class EDIConfigDigester {
 
             if (currentNode.getNodeName().equalsIgnoreCase(namespacePrefix + "component")) {
                 Component component = new Component();
-                field.getComponents().add(component);
+                field.addComponent(component);
                 digestComponent(currentNode, component, namespacePrefix, field);
             }
         }
