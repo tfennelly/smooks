@@ -16,12 +16,11 @@
 
 package org.milyn.edisax.model.internal;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Component extends ValueNode implements ContainerNode {
 
-    private List<SubComponent> subComponent;
+    private List<SubComponent> subComponents = new NodeIndexedArray<SubComponent>();
     private Boolean required;
     private Boolean truncatable;
 
@@ -41,14 +40,11 @@ public class Component extends ValueNode implements ContainerNode {
 	}
 
 	public List<SubComponent> getSubComponents() {
-        if (subComponent == null) {
-            subComponent = new ArrayList<SubComponent>();
-        }
-        return this.subComponent;
+        return subComponents;
     }
     
     public Component addSubComponent(SubComponent subComponent) {
-    	getSubComponents().add(subComponent);
+    	subComponents.add(subComponent);
     	return this;
     }
 

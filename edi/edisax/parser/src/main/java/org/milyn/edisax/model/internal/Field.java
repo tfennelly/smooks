@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Field extends ValueNode implements ContainerNode {
 
-    private List<Component> components = new ArrayList<Component>();
+    private List<Component> components = new NodeIndexedArray<Component>();
     private Boolean required;
     private Boolean truncatable;
     
@@ -42,13 +42,10 @@ public class Field extends ValueNode implements ContainerNode {
 	}
 
 	public List<Component> getComponents() {
-        return Collections.unmodifiableList(this.components);
+        return components;
     }
 
     public Field addComponent(Component component) {
-        if(component.isNodeIndexUndefined()) {
-            component.setNodeIndex(components.size());
-        }
     	components.add(component);
     	return this;
     }

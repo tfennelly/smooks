@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class Segment extends SegmentGroup implements ContainerNode {
 
-    private List<Field> fields;
+    private List<Field> fields = new NodeIndexedArray<Field>();
     private String segcode;
     private Pattern segcodePattern;
     private Boolean truncatable;
@@ -31,14 +31,11 @@ public class Segment extends SegmentGroup implements ContainerNode {
     private String importXmlTag;
 
     public List<Field> getFields() {
-        if (fields == null) {
-            fields = new ArrayList<Field>();
-        }
-        return this.fields;
+        return fields;
     }
     
     public Segment addField(Field field) {
-    	getFields().add(field);
+    	fields.add(field);
     	return this;
     }
 

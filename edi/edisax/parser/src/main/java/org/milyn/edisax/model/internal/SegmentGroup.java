@@ -26,14 +26,11 @@ import java.util.regex.Pattern;
  */
 public class SegmentGroup extends MappingNode {
 
-    private List<SegmentGroup> segments;
+    private List<SegmentGroup> segments = new NodeIndexedArray<SegmentGroup>();
     private Integer minOccurs;
     private Integer maxOccurs;
 
     public List<SegmentGroup> getSegments() {
-        if (segments == null) {
-            segments = new ArrayList<SegmentGroup>();
-        }
         return this.segments;
     }
 

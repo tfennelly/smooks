@@ -20,6 +20,7 @@ public class MappingNode {
 
     public static final String INDEXED_NODE_SEPARATOR = "_-_-";
 
+    private int nodeIndex = -1; // Undefined... set by the container.
     private String xmltag;
     private String nodeTypeRef;
     private String documentation;
@@ -27,7 +28,19 @@ public class MappingNode {
     
 	public MappingNode() {
 	}
-    
+
+    public int getNodeIndex() {
+        return nodeIndex;
+    }
+
+    public void setNodeIndex(int nodeIndex) {
+        this.nodeIndex = nodeIndex;
+    }
+
+    public boolean isNodeIndexUndefined() {
+        return (nodeIndex == -1);
+    }
+
 	public MappingNode(String xmltag) {
 		this.xmltag = xmltag;
 	}

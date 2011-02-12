@@ -32,7 +32,6 @@ import java.util.Properties;
  */
 public class ValueNode extends MappingNode {
 
-    private int nodeIndex = -1; // Undefined... set by the container.
     private String dataType;
     private List<Map.Entry<String,String>> parameters;
     private Integer minLength;
@@ -49,18 +48,6 @@ public class ValueNode extends MappingNode {
 		minLength = 0;
 		maxLength = 1;
 	}
-
-    public int getNodeIndex() {
-        return nodeIndex;
-    }
-
-    public void setNodeIndex(int nodeIndex) {
-        this.nodeIndex = nodeIndex;
-    }
-
-    public boolean isNodeIndexUndefined() {
-        return (nodeIndex == -1);
-    }
 
     public String getDataType() {
         return dataType;
