@@ -73,10 +73,12 @@ public interface EdiSpecificationReader {
     Properties getInterchangeProperties();
 
     /**
-     * Returns a name of the message directory that is common for all other 
-     * mapping model names
-     * 
-     * @return a name of the common model or null
+     * Get the {@link EdiDirectory} instance for specification.
+     * <p/>
+     * Implementations should cache this instance.
+     *
+     * @return The EdiDirector instance.
+     * @throws IOException Error reading specification.
      */
-	String getCommmonMessageName();
+    EdiDirectory getEdiDirectory() throws IOException;
 }

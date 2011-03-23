@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.util.ExtendedMetaData;
+import org.milyn.ect.EdiConvertionTool;
+import org.milyn.ect.EdiDirectory;
 import org.milyn.ect.EdiSpecificationReader;
 import org.milyn.edisax.model.internal.Edimap;
 import org.milyn.edisax.model.internal.Field;
@@ -40,60 +42,60 @@ public class ECoreGenerator {
 	/**
 	 * This method will convert information available in
 	 * {@link EdiSpecificationReader} into the set of {@link EPackage} packages.
-	 * 
+	 *
 	 * Set will contain one package with common definitions and one package per
 	 * each {@link Edimap} that is using common classes
-	 * 
-	 * @param reader
-	 * @return
-	 * @throws IOException
+	 *
+	 * @param reader The specification reader.
+     * @return The EPackages.
 	 */
 	public Set<EPackage> generatePackages(EdiSpecificationReader reader)
 			throws IOException {
+
+        EdiDirectory ediDirectory = reader.getEdiDirectory();
+		return generatePackages(ediDirectory);
+	}
+
+    /**
+     * This method will convert information available in
+     * {@link EdiDirectory} into the set of {@link EPackage} packages.
+     *
+     * Set will contain one package with common definitions and one package per
+     * each {@link Edimap} that is using common classes
+     *
+     * @param ediDirectory The EdiDirectory.
+     * @return The EPackages.
+     */
+    public Set<EPackage> generatePackages(EdiDirectory ediDirectory) {
 		log.debug("Converting UN EDIFACT Model");
 		Set<EPackage> result = new HashSet<EPackage>();
 
 		// Creating common package
+        Edimap commonModel = ediDirectory.getCommonModel();
 		Map<String, EClass> commonClasses = new HashMap<String, EClass>();
-		String commonModelName = reader.getCommmonMessageName();
-		if (commonModelName != null) {
-			// If we have a common model then we need to process it
-			// first
-			Edimap commonModel = reader.getMappingModel(commonModelName);
-			EPackage commonPackage = EcoreFactory.eINSTANCE.createEPackage();
-			commonPackage.setName(COMMON_PACKAGE_NAME);
-			commonPackage.setNsPrefix("common");
-			commonPackage.setNsURI(commonModel.getDescription().getNamespace());
-			Collection<EClass> clzz = createCommonClasses(commonModel,
-					commonClasses);
-			commonPackage.getEClassifiers().addAll(clzz);
-			result.add(commonPackage);
-		}
+        EPackage commonPackage = EcoreFactory.eINSTANCE.createEPackage();
+        commonPackage.setName(COMMON_PACKAGE_NAME);
+        commonPackage.setNsPrefix("common");
+        commonPackage.setNsURI(commonModel.getDescription().getNamespace());
+        Collection<EClass> clzz = createCommonClasses(commonModel, commonClasses);
+        commonPackage.getEClassifiers().addAll(clzz);
+        result.add(commonPackage);
 
 		// Processing individual packages
-		Set<String> messageNames = reader.getMessageNames();
-		for (String messageName : messageNames) {
-			if (!(commonModelName != null && messageName.equals(commonModelName))) {
-				Edimap mappingModel = reader.getMappingModel(messageName);
-				EPackage pkg = ECoreConversionUtils
-						.mappingModelToEPackage(mappingModel);
-				pkg.getEClassifiers().addAll(
-						createMappingClases(mappingModel.getSegments(),
-								commonClasses));
-				if (!result.add(pkg)) {
-					log.warn("WARN: Duplicated package " + pkg.getName()
-							+ " for ");
-				}
-			}
+		for (Edimap mappingModel : ediDirectory.getMessageModels()) {
+            EPackage pkg = ECoreConversionUtils.mappingModelToEPackage(mappingModel);
+            pkg.getEClassifiers().addAll(createMappingClases(mappingModel.getSegments(), commonClasses));
+            if (!result.add(pkg)) {
+                log.warn("WARN: Duplicated package " + pkg.getName() + " for ");
+            }
 		}
-		log.debug("Converted EDIFACT Model  into " + result.size()
-				+ " EPackages");
+		log.debug("Converted EDIFACT Model  into " + result.size() + " EPackages");
 		return result;
-	}
+    }
 
 	/**
 	 * Creating mapping classes
-	 * 
+	 *
 	 * @param root
 	 * @param commonClasses
 	 * @return
@@ -114,7 +116,7 @@ public class ECoreGenerator {
 
 	/**
 	 * Process segments
-	 * 
+	 *
 	 * @param segments
 	 * @param commonClasses
 	 * @param result
@@ -158,7 +160,7 @@ public class ECoreGenerator {
 
 	/**
 	 * This method converting classes for common mapping model
-	 * 
+	 *
 	 * @param commonModel
 	 * @param commonClasses
 	 * @param commonPackage
@@ -187,10 +189,10 @@ public class ECoreGenerator {
 	/**
 	 * Here we transform {@link Field} to {@link EStructuralFeature} which is
 	 * either {@link EAttribute} or {@link EReference}
-	 * 
+	 *
 	 * In case of {@link EReference} we would need to add a new {@link EClass}
 	 * to the result EClass set
-	 * 
+	 *
 	 * @param fields
 	 * @param result
 	 */
@@ -225,7 +227,7 @@ public class ECoreGenerator {
 
 	/**
 	 * Just cut out a local part from the fully qualified name
-	 * 
+	 *
 	 * @param segment
 	 * @return
 	 */
@@ -234,5 +236,4 @@ public class ECoreGenerator {
 		String ref = segment.getNodeTypeRef();
 		return ref.substring(ref.indexOf(":") + 1);
 	}
-
 }
