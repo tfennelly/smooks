@@ -21,7 +21,7 @@ xstream = [groupId: 'com.thoughtworks.xstream', artifactId: 'xstream', version: 
 mvel2 = [groupId: 'org.mvel', artifactId: 'mvel2', version: '2.0.17']
 jaxen = [groupId: 'jaxen', artifactId: 'jaxen', version: '1.1.1']
 dtdParser = [groupId: 'dtdparser', artifactId: 'dtdparser', version: '1.21']
-xercesImpl = [groupId: 'xerces', artifactId: 'xercesImpl', version: '2.7.1']
+xercesImpl = [groupId: 'xerces', artifactId: 'xercesImpl', version: '2.9.1']
 xalan = [groupId: 'xalan', artifactId: 'xalan', version: '2.7.1']
 
 /*

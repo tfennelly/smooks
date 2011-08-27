@@ -6,4 +6,5 @@ dependencies {
 	compile servletApi.dependency()
 	compile hsqldb.dependency()
 	compile project(":testres")
+    testCompile xercesImpl.dependency()
 }
